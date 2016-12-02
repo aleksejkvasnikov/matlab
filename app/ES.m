@@ -17,7 +17,8 @@ while g<gMax %
     
    for l = 1 : lamd %
     q1(l)=q(g) * exp(randn * t); % 
-    z = transpose(mvnrnd(0, eye, gMax)); % gen Z vector
+  %   z = transpose(mvnrnd(0, eye, gMax)); % gen Z vector
+    z = randn(1, gMax);
     x = q1(l)*z; % 
     y1(l,:)=y(g,:)+x; %
         for iter = 1 : N % calculating F
@@ -25,7 +26,7 @@ while g<gMax %
             F1(l)=F1(l)+somval ; % 
         end
    end
-   [F1SORT,ind] = sort(F1, 'descend'); % vector sorting
+   [F1SORT,ind] = sort(F1, 'ascend'); % vector sorting
    q1Sort = q1(ind); % sorting q1 with vector sorting indexes
    %q1Sort = sort(q1);
    y1Sort = y1(ind,:); % sorting y1 with vector sorting indexes
@@ -37,8 +38,8 @@ while g<gMax %
    g=g+1;
 end
 %x1=1:1:gMax; 
-%plot(y(2,:).^2,'g')
+%loglog(y(30,:).^2,'g')
 %hold on;
-plot(q,'b')
+loglog(q,'b')
 %hold off;
 %plot(x1,y(2,:).^2,'c',x1,y(3,:).^2,'m',x1,y(4,:).^2,'y',x1,y(11,:).^2,'r',x1,y(141,:).^2,'g');
