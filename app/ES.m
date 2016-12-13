@@ -4,12 +4,12 @@ u = 3;
 N = 40;
 t = 1/sqrt(N);
 g = 1; %  0 generation
-gMax = 1000;
+gMax = 3000;
 
 q = ones(1, gMax); 
 q1 = ones(1, lamd); % for algorithm
-y = ones(gMax, gMax); 
-y1 = ones(lamd, gMax); %  for algorithm
+y = ones(gMax, N); 
+y1 = ones(lamd, N); %  for algorithm
 
 F1 =  zeros(1,lamd);
 
@@ -18,7 +18,7 @@ while g<gMax %
    for l = 1 : lamd %
     q1(l)=q(g) * exp(randn * t); % 
   %   z = transpose(mvnrnd(0, eye, gMax)); % gen Z vector
-    z = randn(1, gMax);
+    z = randn(1, N);
     x = q1(l)*z; % 
     y1(l,:)=y(g,:)+x; %
         for iter = 1 : N % calculating F
@@ -38,8 +38,8 @@ while g<gMax %
    g=g+1;
 end
 %x1=1:1:gMax; 
-%loglog(y(30,:).^2,'g')
-%hold on;
+loglog(y(:,30).^2,'g')
+hold on;
 loglog(q,'b')
 %hold off;
 %plot(x1,y(2,:).^2,'c',x1,y(3,:).^2,'m',x1,y(4,:).^2,'y',x1,y(11,:).^2,'r',x1,y(141,:).^2,'g');
