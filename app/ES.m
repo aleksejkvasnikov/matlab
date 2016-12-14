@@ -5,7 +5,7 @@ N = 40;
 t = 1/sqrt(N);
 
 gMax = 1000;
-count = 20;
+count = 100;
 q = ones(1, gMax, count); 
 
 y = ones(gMax, N, count); 
@@ -20,7 +20,7 @@ for i = 1 : count
 while g<gMax % 
     
    for l = 1 : lamd %
-    q1(l)=q(g, i) * exp(randn * t); % 
+    q1(l)=q(1,g, i) * exp(randn * t); % 
   %   z = transpose(mvnrnd(0, eye, gMax)); % gen Z vector
     z = randn(1, N);
     x = q1(l)*z; % 
@@ -35,7 +35,7 @@ while g<gMax %
    %q1Sort = sort(q1);
    y1Sort = y1(ind,:); % sorting y1 with vector sorting indexes
    %y1Sort = sortrows(y1);
-   q(g+1, i)=(1/u)*sum(q1Sort(1:u));
+   q(1,g+1, i)=(1/u)*sum(q1Sort(1:u));
    y(g+1,:, i)=(1/u)*sum(y1Sort(1:u,:));
    F1 =  zeros(1,lamd);
     q1 = ones(1, lamd);  
@@ -43,15 +43,17 @@ while g<gMax %
 end
 
 end
-test30 = (y(:,30, 1).^2);
+average30 = (y(:,30, 1).^2);
+averageq = (q(:,:,1));
 for i = 2 : count
-    test30 = [test30  (y(:,30, i).^2)];
+    averageq = [averageq; (q(:,:,i))];
+    average30 = [average30  (y(:,30, i).^2)];
 end
-test30 = transpose(test30);
-%testtest = mean(test30);
+
+average30 = transpose(average30);
 %x1=1:1:gMax; 
-loglog(mean(test30),'g')
+loglog(mean(average30),'g')
 hold on;
-loglog(q(:,1),'b')
+loglog(mean(averageq),'b')
 %hold off;
 %plot(x1,y(2,:).^2,'c',x1,y(3,:).^2,'m',x1,y(4,:).^2,'y',x1,y(11,:).^2,'r',x1,y(141,:).^2,'g');
