@@ -3,14 +3,10 @@ lamd = 10;
 u = 3;
 N = 40;
 t = 1/sqrt(N);
-
-gMax = 1000;
-count = 100;
+gMax = 10000;
+count = 50;
 q = ones(1, gMax, count); 
-
 y = ones(gMax, N, count); 
-
-
 F1 =  zeros(1,lamd);
 
 for i = 1 : count
@@ -32,9 +28,7 @@ while g<gMax %
    end
    [F1SORT,ind] = sort(F1, 'ascend'); % vector sorting
    q1Sort = q1(ind); % sorting q1 with vector sorting indexes
-   %q1Sort = sort(q1);
    y1Sort = y1(ind,:); % sorting y1 with vector sorting indexes
-   %y1Sort = sortrows(y1);
    q(1,g+1, i)=(1/u)*sum(q1Sort(1:u));
    y(g+1,:, i)=(1/u)*sum(y1Sort(1:u,:));
    F1 =  zeros(1,lamd);
@@ -43,17 +37,37 @@ while g<gMax %
 end
 
 end
-average30 = (y(:,30, 1).^2);
+average1 = (y(:,1, 1).^2);
+average2 = (y(:,2, 1).^2);
+average3 = (y(:,3, 1).^2);
+average10 = (y(:,10, 1).^2);
+average40 = (y(:,40, 1).^2);
 averageq = (q(:,:,1));
 for i = 2 : count
     averageq = [averageq; (q(:,:,i))];
-    average30 = [average30  (y(:,30, i).^2)];
+    average1 = [average1  (y(:,1, i).^2)];
+    average2 = [average2  (y(:,2, i).^2)];
+    average3 = [average3  (y(:,3, i).^2)];
+    average10 = [average10  (y(:,10, i).^2)];
+    average40 = [average40  (y(:,40, i).^2)];
 end
 
-average30 = transpose(average30);
-%x1=1:1:gMax; 
-loglog(mean(average30),'g')
+average1 = transpose(average1);
+average2 = transpose(average2);
+average3 = transpose(average3);
+average10 = transpose(average10);
+average40 = transpose(average40);
+
+loglog(mean(average1),'k','DisplayName',sprintf('y1\n'))
+grid on;
 hold on;
-loglog(mean(averageq),'b')
-%hold off;
-%plot(x1,y(2,:).^2,'c',x1,y(3,:).^2,'m',x1,y(4,:).^2,'y',x1,y(11,:).^2,'r',x1,y(141,:).^2,'g');
+loglog(mean(average2),'r','DisplayName',sprintf('y2\n'))
+hold on;
+loglog(mean(average3),'b','DisplayName',sprintf('y3\n'))
+hold on;
+loglog(mean(average10),'g','DisplayName',sprintf('y10\n'))
+hold on;
+loglog(mean(average40),'k','DisplayName',sprintf('y40\n'))
+hold on;
+loglog(mean(averageq),'--k','DisplayName',sprintf('q\n'))
+legend('-DynamicLegend'); 
